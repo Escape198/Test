@@ -1,0 +1,80 @@
+{% extends 'my_admin/pattern.html' %}
+{% load static %}
+{%block title%}Edit order №{{order.id}}{%endblock%}
+{% block content %}
+        <section class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'start_admin' %}">Home</a></li>
+
+                    <li class="breadcrumb-item"><a href="{% url 'admin_orders' %}">All orders</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit order №{{order.id}}</li>
+                </ol>
+            </nav>
+            <h1>Edit order №{{order.id}}</h1>
+            <form action="{% url 'admin_update_order' order.id %}" method="POST" class="form-row border border-dark p-3">
+                {% csrf_token %}
+                <div class="form-row col-lg-6 col-12 p-lg-2 pr-0">
+                    <label for="name" class="col-sm-4 col-12 col-form-label">Client</label>
+                    <div class="input-group col-sm-8 col-12 mb-2">
+                        <input type="text" class="form-control h-100" id="fio" name="Client" placeholder="{{order.Client.Name}} {{order.Client.Fname}}"  disabled >
+                    </div>
+                    <label for="tel" class="col-sm-4 col-12 col-form-label">Phone</label>
+                    <div class="col-sm-8 col-12">
+                        <input type="tel" class="form-control mb-2" id="tel" placeholder="{{order.Client.Phone}}" disabled>
+                    </div>
+                    <label for="car" class="col-sm-4 col-12 col-form-label">Transport</label>
+                    <div class="input-group col-sm-8 col-12 mb-2">
+                        <input type="text" class="form-control h-100" id="car" value="{{order.Car.id}}" name="Car" required>
+                        <div class="input-group-append">
+                            <a class="btn btn-primary h-100 p-2" href="#"><i class="fas fa-plus text-white"></i></a>
+                        </div>
+                    </div>
+                    <label for="datestart" class="col-sm-4 col-12 col-form-label">Start</label>
+                    <div class="col-sm-8 col-12">
+                        <input type="date" class="form-control  mb-2" id="datestart" name="DateStartContract" value="{{order.DateStartContract|date:'Y-m-d'}}"
+                         min="{# now 'Y-m-d' #}" max="{{maxdate|date:'Y-m-d'}}" required>
+                    </div>
+                    <label for="dateend" class="col-sm-4 col-12 col-form-label">End</label>
+                    <div class="col-sm-8 col-12">
+                        <input type="date" class="form-control  mb-2" id="dateend" name="DateEndContract" value="{{order.DateEndContract|date:'Y-m-d'}}" min="{% now 'Y-m-d' %}" max="{{maxdate|date:'Y-m-d'}}" required>
+                    </div>
+                    <label for="driver" class="col-sm-4 col-12 col-form-label">Driver</label>
+                    <div class="col-sm-8 col-12">
+                        <select class="form-control mb-2" name="Driver">
+                            {% if order.Driver == 1 %}
+                            <option value="1" selected>Yes</option>
+                            <option value="0">No</option>
+                            {% else %}
+                            <option value="1">Yes</option>
+                            <option value="0"selected>No</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <label for="cost" class="col-sm-4 col-12 col-form-label">Cost</label>
+                    <div class="col-sm-8 col-12">
+                        <input type="text" class="form-control mb-2" id="cost" name="Cost" placeholder="Стоимость" readonly value="{{order.Cost}}">
+                    </div>
+                <div class="form-row col-lg-6 col-12 p-lg-2 pr-0">
+                    <label for="company" class="col-sm-4 col-12 col-form-label">Company</label>
+                    <div class="col-sm-8 col-12">
+                        <input type="text" class="form-control mb-2" id="company"  disabled placeholder="{{order.Car.CompanyID.Name}}">
+                    </div>
+                    <label for="tel2" class="col-sm-4 col-12 col-form-label">Phone</label>
+                    <div class="col-sm-8 col-12">
+                        <input type="tel" class="form-control mb-2" id="tel2" placeholder="{{order.Car.CompanyID.Phone}}" disabled>
+                    </div>
+                    <label for="address" class="col-sm-4 col-12 col-form-label">Location</label>
+                    <div class="col-sm-8 col-12">
+                        <input type="text" class="form-control mb-2" id="address" placeholder="{{order.Car.Location}}" disabled>
+                    </div>
+                    <label for="note" class="col-sm-4 col-12 col-form-label">Note</label>
+                    <div class="col-sm-8 col-12">
+                        <textarea class="form-control mb-2" id="note" rows="10" placeholder="Note" name="Note">{% if order.Note != 'None' %}{{order.Note}}{% endif  %}</textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary p-2 col-lg-3 col-12  my-3">Edit</button>
+            </form>
+        </section>
+        <wbr>
+{% endblock %}
