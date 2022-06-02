@@ -1,0 +1,62 @@
+{% extends 'main/pattern.html' %}
+{% load static %}
+{% block title %}Ssollo{% endblock %}
+{% block description %}
+<meta name="description" content="
+The company Ssollo offers a large selection of different categories of cars for rent, from cars to trucks or buses.
+Car rental on favorable terms. Low prices and easy rental conditions. Rent a car of different categories Ssollo Moscow.">
+{% endblock %}
+{% block openg %}
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="The company Ssollo offers a large selection of different categories of cars for rent, from cars to trucks or buses.\nCar rental on favorable terms. Low prices and easy rental conditions. Rent a car of different categories Ssollo Moscow." />
+        <meta property="og:site_name" content="Ssollo car rental Moscow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://maksmez.beget.tech/" />
+        <meta property="og:image" content="http://maksmez.beget.tech/static/main/img/slider/autorent.jpg" />
+{% endblock %}
+{% block jsonld %}
+<script type='application/ld+json'>
+{
+  "@context": "http://www.schema.org",
+  "@type": "Organization",
+  "name": "Ssollo car rental Moscow",
+  "url": "http://maksmez.beget.tech/",
+  "logo": "http://maksmez.beget.tech/static/main/img/Ssollo.svg",
+  "image": "http://maksmez.beget.tech/static/main/img/slider/autorent.jpg",
+  "description": "The company Ssollo offers a large selection of different categories of cars for rent, from cars to trucks or buses.\nCar rental on favorable terms. Low prices and easy rental conditions. Rent a car of different categories Ssollo Moscow.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Moscow, Novy Arbat Street 32",
+    "addressLocality": "Moscow"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+792412345678"
+  }
+}
+ </script>
+{% endblock %}{% block content %}
+   <main>
+      <div id="main-container">
+         <div class="fr">
+            <div class="fotorama" data-autoplay="true" data-loop="true" data-width="100%">
+               <a href="{% static 'main/img/slider/autorent.jpg' %}"></a>
+               <a href="{% static 'main/img/slider/autorent2.jpg' %}"></a>
+               <a href="{% static 'main/img/slider/autorent3.jpg' %}"></a>
+            </div>
+         </div>
+         <h2 class="MainHeader">Our office on the map</h2>
+         <div class="Map">
+            <div id="info">
+               <p>Moscow</p>
+               <p>Novy Arbat Street 32</p>
+               <wbr>
+               <p>Mon-Sun: 10:00 - 22:00.</p>
+               <wbr>
+               <p>Phone: +7(495)255-78-89</p>
+            </div>
+            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A046f4dfd833a5513bff8dc780f3ee64dc776a39e4ae3088d4f344ae31b1d30d9&amp;width=1054&amp;height=640&amp;lang=ru_RU&amp;scroll=true"></script>
+         </div>
+      </div>
+   </main>
+{% endblock %}

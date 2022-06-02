@@ -1,0 +1,77 @@
+{% extends 'main/pattern.html' %}
+{% load static %}
+{% block title %}Contacts Ssollo{% endblock %}
+{% block description %}
+<meta name="description" content="
+Car rental services in Moscow. The main car rental company.
+Our phones +79241323456 +79249846134. E-mail: test@test.ru. Website: Ssollo.ru The address of our office: Moscow, Novy Arbat Street 32. Ssollo..
+Rent a car of different categories">
+{% endblock %}
+{% block openg %}
+    <meta property="og:title" content="Contact Ssollo" />
+    <meta property="og:description" content="Car rental services in Moscow. The main car rental company.
+E-mail: test@test.ru. Веб-сайт: Ssollo.ru The address of our office: Moscow, Novy Arbat Street 32. Ssollo.
+Ssollo car rental Moscow" />
+    <meta property="og:site_name" content="Ssollo car rental Moscow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://maksmez.beget.tech/contact/" />
+    <meta property="og:image" content="http://maksmez.beget.tech/static/main/img/slider/autorent.jpg" />
+{% endblock %}
+{% block jsonld %}
+<script type='application/ld+json'>
+{
+  "@context": "http://www.schema.org",
+  "@type": "WebSite",
+  "name": "Contact Ssollo",
+  "alternateName": "Ssollo car rental Moscow",
+  "url": "http://maksmez.beget.tech/contact/"
+}
+ </script>
+{% endblock %}
+{% block content %}
+  <main>
+      <div id="main-container">
+         <div class="bread2">
+            <ul class="breadcrumbs">
+               <li class="breadcrumbs-item">
+                  <a class="breadcrumbs-link" href="index.html">Home</a>
+               </li>
+               <li class="breadcrumbs-item">
+                  <span class="breadcrumbs-link  current">Contacts</span>
+               </li>
+            </ul>
+         </div>
+         <h1>Contact information</h1>
+         <div class="BoxContact">
+            <div itemscope itemtype="http://schema.org/Organization" class="Contact">
+               <p itemprop="name">Ssollo</p>
+               <p itemprop="address">664009, Moscow, Novy Arbat Street 32.</p>
+               <p itemprop="telephone">+79151288687</p>
+               <p itemprop="telephone">+74952557889</p>
+               <p itemprop="email">E-mail: test@test.ru</p>
+               <p>Mon-Sun: 10:00 - 22:00.</p>
+            </div>
+            <div class="Feedback">
+              <div class="form-left-decoration"></div>
+              <div class="form-right-decoration"></div>
+              <div class="circle"></div>
+              <div class="form-inner">
+               <h2 class="MainHeader" style="color: #1e847f">Email us</h2>
+               <form action="{% url 'contact_add_feedback'%}" method="POST" class="form_mail">
+                  {% csrf_token %}
+                  <div class="input_mail">
+                     <p><input type="text" placeholder="Name" name="Name"  required></p>
+                     <p><input type="text" placeholder="Phone or Email" name="PhoneEmail" required></p>
+                     <p><input type="submit" value="Send"></p>
+                  </div>
+                  <div class="textarea_mail">
+                     <textarea placeholder="Message" name="Message" required maxlength="250"></textarea>
+                     <p><input type="submit" name="contact" value="Send"></p>
+                  </div>
+               </form>
+            </div>
+         </div>
+         <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A046f4dfd833a5513bff8dc780f3ee64dc776a39e4ae3088d4f344ae31b1d30d9&amp;width=1054&amp;height=640&amp;lang=ru_RU&amp;scroll=true"></script>
+      </div>
+   </main>
+   {% endblock %}
