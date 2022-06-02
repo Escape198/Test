@@ -1,0 +1,409 @@
+{% extends 'main/pattern.html' %}
+{% load static %}
+{% block title %}{{car_item.Brand_and_name}}{% endblock %}
+{% block description %}
+<meta name="description" content="Rent {{car_item.Brand_and_name}}">
+{% endblock %}
+{% block openg %}
+        <meta property="og:title" content="{{car_item.Brand_and_name}}" />
+        <meta property="og:description" content="Rent {{car_item.Brand_and_name}}">
+        <meta property="og:site_name" content="Ssollo car rental Moscow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://maksmez.beget.tech/catalog/category_{{car_item.CategoryID.id}}/{{car_item.id}}" />
+        <meta property="og:image" content="http://maksmez.beget.tech{{f.0}}" />
+{% endblock %}
+{% block jsonld %}
+<script type='application/ld+json'>
+{
+  "@context": "http://www.schema.org",
+  "@type": "WebSite",
+  "name": "{{car_item.Brand_and_name}}",
+  "alternateName": "Ssollo car rental Moscow",
+  "url": "http://maksmez.beget.tech/catalog/category_{{car_item.CategoryID.id}}/{{car_item.id}}"
+}
+ </script>
+{% endblock %}
+{% block content %}
+<main>
+   <div id="main-container">
+      <div class="bread2">
+         <ul class="breadcrumbs">
+            <li class="breadcrumbs-item">
+               <a class="breadcrumbs-link" href="{% url 'index' %}">Home</a>
+            </li>
+            <li class="breadcrumbs-item">
+               <a class="breadcrumbs-link" href="{% url 'catalog' %}">Catalog</a>
+            </li>
+            <li class="breadcrumbs-item">
+               <a class="breadcrumbs-link" href="{% url 'carlist' car_item.CategoryID.id %}">{{car_item.CategoryID}}</a>
+            </li>
+            <li class="breadcrumbs-item">
+               <span class="breadcrumbs-link  current">{{car_item.Brand_and_name}}</span>
+            </li>
+         </ul>
+      </div>
+      <div class="hgroup">
+         <h1>{{car_item.Brand_and_name}}</h1>
+         <a class="carcard_fav1" href="">Add to Favorites <i class="fas fa-star fa-1x"></i> </a>
+         <a class="carcard_fav2" href=""><i class="fas fa-star"></i> </a>
+      </div>
+      <div class="big_card_content">
+         <div class="small_card_content1">
+            <div class="fotorama_carcard fr">
+               <div class="fotorama" data-nav="thumbs" data-allowfullscreen="true" data-loop="true" data-width="100%">
+                  {% for x in m %}
+                  <a href="{{x}}"></a>
+                  {% endfor %}
+               </div>
+            </div>
+            <div class="acor_box">
+               <div class="acor-container">
+                  <input type="checkbox" name="chacor" id="chacor1" checked="checked" />
+                  <label for="chacor1">Features</label>
+                  <div class="acor-body">
+                     <div class="char_content">
+                        <div itemscope itemtype="https://schema.org/Vehicle" class="column" style="width: 90%;">
+                           <div class="value">
+                              <meta itemprop="name" content="{{car_item.Brand_and_name}}" />
+                              <meta itemprop="brand" content="{{car_item.Brand_and_name}}" />
+                              <div class="name_char">Category</div>
+                              <div class="point2"></div>
+                              <div class="value_char">{{car_item.CategoryID}}</div>
+                           </div>
+                           <div class="value">
+                              <div class="name_char">Body type</div>
+                              <div class="point2"></div>
+                              <div class="value_char"  itemprop="bodyType" itemscope >{{car_item.get_Car_type_display}}</div>
+                           </div>
+                           <div class="value">
+                              <div class="name_char">Engine</div>
+                              <div class="point2"></div>
+                              <div class="value_char" itemprop="vehicleEngine" itemscope >{{car_item.get_Engine_display}}</div>
+                           </div>
+                           <div class="value">
+                              <div class="name_char">Transmission</div>
+                              <div class="point2"></div>
+                              <div class="value_char" itemprop="vehicleTransmission" itemscope>{{car_item.get_Transmission_display}}</div>
+                           </div>
+                           <div class="value">
+                              <div class="name_char">Power</div>
+                              <div class="point2"></div>
+                              <div class="value_char" itemprop="vehicleConfiguration" itemscope>{{car_item.Power}}</div>
+                           </div>
+                           <div class="value">
+                              <div class="name_char">Drive</div>
+                              <div class="point2"></div>
+                              <div class="value_char" itemprop="driveWheelConfiguration" itemscope >{{car_item.get_Drive_display}}</div>
+                           </div>
+                           <div class="value">
+                              <div class="name_char">Drive Wheel</div>
+                              <div class="point2"></div>
+                              <div class="value_char">{{car_item.get_Wheel_drive_display}}</div>
+                           </div>
+                           <div class="value">
+                              <div class="name_char">Year</div>
+                              <div class="point2"></div>
+                              <div class="value_char" itemprop="vehicleModelDate" itemscope >{{car_item.Year}}</div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <input type="checkbox" name="chacor" id="chacor2" />
+                  <label for="chacor2">Rent Condition</label>
+                  <div class="acor-body">
+                     <p>{{car_item.RentCondition}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="small_card_content1">
+            <div class="submit_button_admin">
+               <a href="admin/admin_orders.html" class="button_admin"> All orders</a>
+               <a href="{% url 'admin_update_car' car_item.id %}" class="button_admin"> Edit</a>
+            </div>
+            <div class="rentdate">
+               <h2>Choose a rental date</h2>
+               <form action="{% url 'admin_add_order_client'  car_item.id %}" method="POST" class="inputs">
+                  {% csrf_token %}
+                  <div>
+                     <div>
+                        <input class="input_date" type="date" name="DateStartContract" required min="{% now 'Y-m-d' %}"><input class="input_time" type="time" disabled>
+                     </div>
+                     <div>
+                        <input class="input_date" type="date" name="DateEndContract" required><input class="input_time" type="time" disabled>
+                     </div>
+                     <p>Водитель <label class="checkbox-green">
+                           {% if car_item.Driver == 1 %}
+                           <input type="checkbox" name="Driver">
+                           <span class="checkbox-green-switch" data-label-on="Да" data-label-off="Нет"></span>
+                        </label>
+                        {% else %}
+                        <input type="checkbox" disabled>
+                        <span class="checkbox-green-switch" data-label-on="Да" data-label-off="Нет"></span>
+                        </label>
+                        {% endif %}
+                     </p>
+                     <div itemscope itemtype="http://schema.org/Offer">
+                        <p><label >Стоимость</label></p>
+                        <p><label itemprop="price" content="{{car_item.Price}}">{{car_item.Price}}</label></p>
+                        <meta itemprop="priceCurrency" content="RUB">
+                     </div>
+                  </div>
+                  <div class="submit_button">
+                     <p><input type="submit" value="Send request"></p>
+                     <p><label>or call us</label></p>
+                     <p><input type="submit" disabled value="{{car_item.CompanyID.Phone}}"></p>
+                  </div>
+               </form>
+            </div>
+            <h2 class="MainHeader">Calendar</h2>
+            <div class="datepicker-here"></div>
+
+         </div>
+
+      </div>
+      <h2 class="MainHeader">Location of transport</h2>
+      <div class="yamap_carcard">
+         <iframe
+            src="https://yandex.ru/map-widget/v1/?um=constructor%3Aaa21ee38ac0e4f78aec1c1b64752f2ddf8a44b235c21552814222be2f65da453&amp;source=constructor"
+            width="100%" height="400" frameborder="0"></iframe>
+      </div>
+      <h2 class="MainHeader">Similar offers</h2>
+      <div class="slider_card" style="width: 100vw;">
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <h3>Nissan Skyline</h3>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>Petrol</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+               <div class="price">
+                  <p>1700 ₽/day</p>
+               </div>
+            </a>
+         </div>
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <p>Nissan Skyline</p>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>h.p</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+
+               <div class="price">
+                  <p>1700 ₽/Day</p>
+               </div>
+            </a>
+         </div>
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <p>Nissan Skyline</p>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>Petrol</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+
+               <div class="price">
+                  <p>1700 ₽/Day</p>
+               </div>
+            </a>
+         </div>
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <p>Nissan Skyline</p>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>Petrol</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+
+               <div class="price">
+                  <p>1700 ₽/Day</p>
+               </div>
+            </a>
+         </div>
+
+      </div>
+
+      <h2 class="MainHeader">Recently watched</h2>
+      <div class="slider_card">
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <p>Nissan Skyline</p>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>Petrol</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+               <div class="price">
+                  <p>1700 ₽/Day</p>
+               </div>
+            </a>
+         </div>
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <p>Nissan Skyline</p>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>Petrol</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+               <div class="price">
+                  <p>1700 ₽/day</p>
+               </div>
+            </a>
+         </div>
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <p>Nissan Skyline</p>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>Petrol</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+               <div class="price">
+                  <p>1700 ₽/day</p>
+               </div>
+            </a>
+         </div>
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <p>Nissan Skyline</p>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>Petrol</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+               <div class="price">
+                  <p>1700 ₽/day</p>
+               </div>
+            </a>
+         </div>
+         <div class="caritem">
+            <a href="" class="item_description">
+               <img src="{% static 'main/img/carphoto/skyline1.jpg' %}" width="300px">
+               <div class="name">
+                  <p>Nissan Skyline</p>
+               </div>
+               <div class="description">
+                  <div>
+                     <p>Auto</p>
+                     <p>Petrol</p>
+                  </div>
+                  <div>
+                     <p>Sedan</p>
+                     <p>Back</p>
+                  </div>
+                  <div>
+                     <p>2001</p>
+                     <p>150h.p</p>
+                  </div>
+               </div>
+               <div class="price">
+                  <p>1700 ₽/day</p>
+               </div>
+            </a>
+         </div>
+      </div>
+   </div>
+</main>
+{% endblock %}

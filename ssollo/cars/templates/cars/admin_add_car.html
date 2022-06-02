@@ -1,0 +1,143 @@
+{% extends 'my_admin/pattern.html' %}
+{% load static %}
+{%block title%}Add car{%endblock%}
+{% block content %}
+        <section class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'start_admin' %}">Home</a></li>
+
+                    <li class="breadcrumb-item"><a href="{% url 'admin_cars' %}">Catalog</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Add car</li>
+                </ol>
+            </nav>
+
+            <div class="row ">
+                <h1 class="col-lg-7">Add car</h1>
+            </div>
+            <form action="{% url 'admin_add_car' %}" method="POST"  class="form-group mt-4 " enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                        <label class="col-form-label" for="header">Header</label>
+                        <input class="form-control" type="text" id="header" name="Header" required>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6 col-sm-6">
+                        <label class="col-form-label">Category</label>
+                        <select class="form-control w-100 " name="CategoryID">
+                            {% for x in category %}
+                            <option value="{{x.id}}">{{x.NameCat}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label">Company</label>
+                        <select class="form-control w-100 " name="CompanyID">
+                            {% for x in company %}
+                            <option value="{{x.id}}">{{x.Name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label" for="brand">Brand and name</label>
+                        <input class="form-control" type="text" id="brand" name="Brand_and_name" required>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label">Кузов</label>
+                        <select class="form-control w-100 " name="Car_type">
+                            {% for x in car.car_type_list %}
+                            <option value="{{x.0}}">{{x.1}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label">Engine</label>
+                        <select class="form-control w-100 " name="Engine">
+                            {% for x in car.engine_list %}
+                            <option value="{{x.0}}">{{x.1}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label">Transmission</label>
+                        <select class="form-control w-100 " name="Transmission">
+                            {% for x in car.transmission_list %}
+                            <option value="{{x.0}}">{{x.1}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label">Drive</label>
+                        <select class="form-control w-100 " name="Drive" >
+                            {% for x in car.drive_list %}
+                            <option value="{{x.0}}">{{x.1}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label">Wheel drive</label>
+                        <select class="form-control w-100 " name="Wheel_drive">
+                            {% for x in car.wheel_drive_list %}
+                            <option value="{{x.0}}">{{x.1}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-4 col-sm-6">
+                        <label class="col-form-label" for="year">Year of manufacture</label>
+                        <input class="form-control" type="number" min="1950" max="{% now 'Y' %}" id="year" name="Year" required >
+                    </div>
+                    <div class="form-group col-lg-2 col-md-4 col-sm-6">
+                        <div class="">
+                            <label class="col-form-label">Driver</label>
+                            <select class="form-control w-100 " name="Driver">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-4 col-sm-6">
+                        <label class="col-form-label" for="power">Power</label>
+                        <input class="form-control" type="number" min="0" max="1000" id="power" name="Power" required>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label">CategoryVUID</label>
+                        <select class="form-control w-100 " name="CategoryVUID" >
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label" for="color">Cost</label>
+                        <input class="form-control" type="number" min="0" id="color" name="Price" required >
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label" for="color">Fixed Rate</label>
+                        <input class="form-control" type="number" min="0" id="color" name="FixedRate" step="0.01" required >
+                    </div>
+                    <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                        <label class="col-form-label" for="color">Percent</label>
+                        <input class="form-control" type="number" min="0" id="color" name="Percent" step="0.01" required >
+                    </div>
+
+                    <div class="form-group col-lg-6 col-md-12">
+                        <label class="col-form-label" for="address">Location</label>
+                        <input class="form-control" type="text" id="address" name="Location" required>
+                    </div>
+                    <div class="form-group col-12">
+                        <label class="col-form-label" for="conditions">Rent Condition</label>
+                        <textarea class="form-control col-12" rows="3" id="conditions" name="RentCondition" required></textarea>
+                    </div>
+
+                    <div class="form-group col-12">
+                        <input type="file" name="photo" multiple>
+                    </div>
+                </div>
+                <div class="form-row col-lg-5 col-12 justify-content-between p-1">
+                    <input type="submit" value="Сохранить"  class="btn btn-success col-lg-5 mb-2 mb-lg-0">
+                </div>
+            </form>
+        </section>
+{%endblock%}

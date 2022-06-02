@@ -1,0 +1,182 @@
+{% extends 'my_admin/pattern.html' %}
+{% load static %}
+{%block title%}Edit car {{car.Brand_and_name}}{%endblock%}
+{% block content %}
+{% load l10n %}
+<section class="col-12">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'start_admin' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_cars' %}">Каталог</a>
+            <li class="breadcrumb-item"><a href="{% url 'admin_info_car' car.id %}">{{car.Brand_and_name}}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Edit car  {{car.Brand_and_name}}</li>
+        </ol>
+    </nav>
+    <div class="row ">
+        <h1 class="col-lg-7">Edit car  {{car.Brand_and_name}}</h1>
+        <div class="col-lg-5 col-12 d-lg-flex ">
+            <form method="POST" action="{% url 'admin_update_car' car.id %}" class="col-lg-6 col-12 p-0 px-lg-3">
+                {% csrf_token %}
+                {% if car.Status == 0 %}
+                <input type="submit" class="btn btn-dark w-100" value="Hide" name="Hidden">
+                {% else %}
+                <input type="submit" class="btn btn-success w-100" value="Show" name="Visible">
+                {% endif %}
+            </form>
+            <div class="col-lg-6 col-12 p-0 px-lg-3 pr-lg-0 mt-2 mt-lg-0">
+                <a href="" class="btn btn-danger  w-100" data-toggle="modal" data-target="#exampleModal">Delete</a>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <form method="POST" action="{% url 'admin_delete_car' car.id %}">
+                        {% csrf_token %}
+                        <h5 class="modal-title pb-4" id="exampleModalLabel">Delete {{car.Brand_and_name}}?</h5>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="" class="btn btn-info" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <form action="{% url 'admin_update_car' car.id %}" method="POST" class="form-group mt-4 "
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                <label class="col-form-label" for="header">Header</label>
+                <input class="form-control" type="text" id="header" name="Header" value="{{car.Header}}" required>
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-6">
+                <label class="col-form-label">Category</label>
+                <select class="form-control w-100 " name="CategoryID">
+                    {% for x in category %}
+                    <option {% if car.CategoryID_id == x.id %} selected {% endif %} value="{{x.id}}">{{x.NameCat}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label">Company</label>
+                <select class="form-control w-100 " name="CompanyID">
+                    {% for x in company %}
+                    <option {% if car.CompanyID_id == x.id %} selected {% endif %} value="{{x.id}}">{{x.Name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label" for="brand">Brand and name</label>
+                <input class="form-control" type="text" id="brand" name="Brand_and_name" value="{{car.Brand_and_name}}" required>
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label">Car type</label>
+                <select class="form-control w-100 " name="Car_type">
+                    {% for x in car.car_type_list %}
+                    <option {% if car.Car_type == x.0 %} selected {% endif %} value="{{x.0}}">{{x.1}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label">Engine</label>
+                <select class="form-control w-100 " name="Engine">
+                    {% for x in car.engine_list %}
+                    <option {% if car.Engine == x.0 %} selected {% endif %} value="{{x.0}}">{{x.1}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label">Transmission</label>
+                <select class="form-control w-100 " name="Transmission">
+                    {% for x in car.transmission_list %}
+                    <option {% if car.Transmission == x.0 %} selected {% endif %} value="{{x.0}}">{{x.1}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label">Drive</label>
+                <select class="form-control w-100 " name="Drive">
+                    {% for x in car.drive_list %}
+                    <option {% if car.Drive == x.0 %} selected {% endif %} value="{{x.0}}">{{x.1}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label">Wheel drive</label>
+                <select class="form-control w-100 " name="Wheel_drive">
+                    {% for x in car.wheel_drive_list %}
+                    <option {% if car.Wheel_drive == x.0 %} selected {% endif %} value="{{x.0}}">{{x.1}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-lg-2 col-md-4 col-sm-6">
+                <label class="col-form-label" for="year">Year</label>
+                <input class="form-control" type="text" id="year" name="Year" value="{{car.Year}}" required min="1950" max="{% now 'Y' %}">
+            </div>
+            <div class="form-group col-lg-2 col-md-4 col-sm-6">
+                <div class="">
+                    <label class="col-form-label">Drive</label>
+                    <select class="form-control w-100 " name="Driver">
+                        {% if car.Driver %}
+                        <option value="1" selected>Yes</option>
+                        <option value="0">Нет</option>
+                        {% else %}
+                        <option value="0" selected>No</option>
+                        <option value="1">Да</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-lg-2 col-md-4 col-sm-6">
+                <label class="col-form-label" for="power">Power</label>
+                <input class="form-control" type="text" id="power" name="Power" value="{{car.Power}}" required min="0" max="1000">
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label">CategoryVUID</label>
+                <select class="form-control w-100 " name="CategoryVUID">
+                    <option {% if car.CategoryVU == 'A' %} selected {% endif %} value="A">A</option>
+                    <option {% if car.CategoryVU == 'B' %} selected {% endif %}value="B">B</option>
+                    <option {% if car.CategoryVU == 'C' %} selected {% endif %}value="C">C</option>
+                    <option {% if car.CategoryVU == 'D' %} selected {% endif %}value="D">D</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label" for="color">Cost</label>
+                <input class="form-control" type="number" id="color" name="Cost" value="{{car.Price|unlocalize}}" required min="0">
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label" for="color">Fixed Rate</label>
+                <input class="form-control" type="number"  id="color" name="FixedRate" value="{{car.FixedRate|unlocalize}}" step="0.01" required min="0">
+            </div>
+            <div class="form-group col-lg-3 col-md-4 col-sm-6">
+                <label class="col-form-label" for="color">Percent</label>
+                <input class="form-control" type="number"
+                 id="color" name="Percent"  value="{{car.Percent|unlocalize}}"  step="0.01" required min="0" max="100">
+            </div>
+
+            <div class="form-group col-lg-6 col-md-12">
+                <label class="col-form-label" for="address">Location</label>
+                <input class="form-control" type="text" id="address" name="Location" value="{{car.Location}}" required>
+            </div>
+            <div class="form-group col-12">
+                <label class="col-form-label" for="conditions">Rent Condition</label>
+                <textarea class="form-control col-12" rows="3" id="conditions" name="RentCondition" required>{{car.RentCondition}}</textarea>
+            </div>
+        </div>
+        <div class="form-row col-lg-5 col-12 justify-content-between p-1">
+            <input type="submit" value="Save" class="btn btn-success col-lg-5 mb-2 mb-lg-0">
+        </div>
+    </form>
+</section>
+{%endblock%}
