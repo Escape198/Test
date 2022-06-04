@@ -1,0 +1,220 @@
+{% extends 'my_admin/pattern.html' %}
+{% load static %}
+{%block title%}Catalog{%endblock%}
+{% block content %}
+
+<section class="col-12">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'start_admin' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Catalog</li>
+        </ol>
+    </nav>
+    <h1>Catalog</h1>
+    <form action="{% url 'admin_cars' %}" method="GET" class="card border-dark col-12 p-0 ">
+        <div class="card-body row justify-content-around align-items-center">
+            <div class="row col-lg-12 justify-content-between col-12">
+                <div class="col-lg-6 col-md-9 col-12 mb-3 mb-md-0 justify-content-around p-0 ">
+                    <a href="{% url 'admin_add_car' %}" class="btn btn-primary p-2 my-1 col-12 col-sm-auto">+ Car</a>
+                    <button type="button" onclick="location.href='admin_categories.html'"
+                        class="btn btn-primary p-2 my-1 col-12 col-sm-auto">All categories</button>
+                </div>
+                <div class="form-group m-0 row  col-lg-4 col-md-3 col-12 align-items-center justify-content-start p-0">
+                    <label class="col-lg-6 col-7 d-md-none d-lg-block  p-0" for="exampleFormControlSelect1">Show by</label>
+                    <select class="form-control col-lg-6 col-md-12 col-5" id="exampleFormControlSelect1" name="count"
+                        onchange="this.form.submit()">
+                        <option value="5" {% if count == 5 %} selected {% endif %}>5</option>
+                        <option value="10" {% if count == 10 %} selected {% endif %}>10</option>
+                        <option value="20" {% if count == 20 %} selected {% endif %}>20</option>
+                    </select>
+                </div>
+            </div>
+            <nav class="navbar  row col-lg-12 col-md-12 col-sm-12 my-lg-3">
+                <div class="form-inline col-12 align-items-start p-0">
+                    <div class="form-inline justify-content-center col-lg-8 p-0 my-4 my-lg-0">
+                        <input class="form-control col-lg-12 col-12 mb-lg-0 mb-2" type="search" placeholder="Search"
+                            aria-label="Search" name="search" >
+                        <div class="row col-12 justify-content-md-center justify-content-start">
+                            <div class=" form-check-inline col-md-3 col-12 p-0">
+                                <input class="form-check-input" type="radio" name="car_search" id="inlineRadio1"
+                                    value="car_name" {% if search_type == None or search_type == 'car_name' %} checked {% endif %}>
+                                <label class="form-check-label" for="inlineRadio1">by name </label>
+                            </div>
+                            <div class=" form-check-inline col-md-3 col-12 p-0">
+                                <input class="form-check-input" type="radio" name="car_search" id="inlineRadio2"
+                                    value="id" {% if search_type == 'id' %} checked {% endif %}>
+                                <label class="form-check-label" for="inlineRadio2">by id</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-inline justify-content-between  col-lg-4 p-0">
+                        <button class="btn btn-outline-primary ml-lg-4 col-lg-5 col-12 mb-sm"
+                            type="submit">Search</button>
+                        <button class="btn btn-danger mt-3 mt-lg-0 col-lg-5 col-12 mb-sm"
+                            type="reset">Reset</button>
+                    </div>
+                </div>
+            </nav>
+            <div class="col-12 row p-0">
+                <div class="form-inline justify-content-between align-items-md-stretch  col-12  my-3 my-lg-0 p-0 ">
+                    <div class="col-lg-3 col-md-6">
+                        <select class="form-control w-100 mb-3 mb-md-0 " name="company">
+                            <option value="" disabled {% if company == '' %} selected {% endif %}>Company</option>
+                            {% for com in companies %}
+                            <option value="{{com.id}}" {% if company == com.id %} selected {% endif %}>{{com.Name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <select class="form-control w-100 " name="category">
+                            <option value="" disabled {% if category == '' %} selected {% endif %}>Category </option>
+                            {% for cat in categories %}
+                                <option value="{{cat.id}}" {% if category == cat.id %} selected {% endif %}>{{cat.NameCat}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class=" form-inline col-lg-3 col-md-6 col-12 p-0 mt-3 mt-lg-0">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <input type="number" placeholder="от" class="form-control col-12 my-2 my-md-0" name="price_from" value="{{price_from}}" min="0">
+                        </div>
+                        <div class="col-lg-6  col-md-6 col-sm-6">
+                            <input type="number" placeholder="до" class="form-control col-12 my-2 my-md-0" name="price_to" value="{{price_to}}" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-inline col-lg-3 col-md-6 col-sm-12 col-12 mt-3 mt-lg-0 text-center">
+                        <div class="form-check  col-lg-6 col-md-4 col-sm-3 col-12">
+                            <label class="form-check-label">Driver</label>
+                        </div>
+                        <div class="form-check text-center col-lg-3 col-md-3 col-sm-2 col-6">
+                            <input class="form-check-input" type="radio" name="" id="exampleRadios1" value="option1">
+                            <label class="form-check-label" for="exampleRadios1">Yes </label>
+                        </div>
+                        <div class="form-check text-center col-lg-3 col-md-3 col-sm-2 col-6">
+                            <input class="form-check-input" type="radio" name="" id="exampleRadios2" value="option1"
+                                checked>
+                            <label class="form-check-label" for="">No </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="justify-content-between col-lg-12 col-12 row p-0 mt-4">
+                <div class="form-group col-lg-3 col-12 col-md-6">
+                    <select class="form-control mb-2 ">
+                        <option value="" disabled selected>Control</option>
+                        <option>Front</option>
+                        <option>Back</option>
+                        <option>Full</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-3 col-12 col-md-6">
+                    <select class="form-control mb-2">
+                        <option value="" disabled selected>Drive</option>
+                        <option>Front</option>
+                        <option>Back</option>
+                        <option>Full</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-3 col-12 col-md-6">
+                    <select class="form-control mb-2">
+                        <option value="" disabled selected>Engine</option>
+                        <option>Front</option>
+                        <option>Back</option>
+                        <option>Full</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-3 col-12 col-md-6">
+                    <select class="form-control mb-2">
+                        <option value="" disabled selected>Transmission</option>
+                        <option>Front</option>
+                        <option>Back</option>
+                        <option>Full</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="mt-5">
+        {%for x in carget%}
+        {% for key, value in js.items %}
+        {% if key == x.id %}
+        <div class="card mb-5">
+            <div class="card-header col-12">
+                <div class="row justify-content-between align-items-center  ">
+                    <div class=" col-12 text-center col-sm-6 justify-content-md-around d-md-flex">
+                        <h4>{{x.Brand_and_name}}</h4>
+                    </div>
+                    <div class="col-12 text-center col-sm-6 text-md-right">
+                        <a href="{% url 'admin_info_car' x.id %}" class="btn btn-primary col-7 p-2">Go to</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body col-12">
+                <div class="row p-2 justify-content-between">
+                    <div class=" row col-lg-6  text-left m-0  justify-content-center   ">
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Company</h5>
+                            <h5>{{x.CompanyID.Name}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Category</h5>
+                            <h5>{{x.CategoryID}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Transmission</h5>
+                            <h5>{{x.get_Transmission_display}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Engine</h5>
+                            <h5>{{x.get_Engine_display}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Car type</h5>
+                            <h5 class="">{{x.get_Car_type_display}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Drive</h5>
+                            <h5 class="">{{x.get_Drive_display}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Cost</h5>
+                            <h5>{{x.Price}}</h5>
+                        </div>
+                    </div>
+                    <div class="row col-lg-6  m-0 justify-content-center p-0 mt-2">
+                        <div class="fotorama col-lg-10 col-md-9 col-12 p-0 "  data-maxwidth="500" data-maxheight="300" data-nav="false">
+                            {% for z in value %}
+                            <img src="{{z}}">
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </div>
+    <section class="col-12 mt-2">
+        <nav aria-label="Example of page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if not prev %} disabled {% endif %}">
+                    <a class="page-link" href="{{ prev }}&count={{count}}{{query}}" tabindex="-1" aria-disabled="true">&#171;</a>
+                </li>
+                {% for x in carget.paginator.page_range %}
+                {% if x == carget.number %}
+                <li class="page-item active"><a class="page-link" href="?page={{ x }}&count={{count}}{{query}}">{{ x }}</a></li>
+                {% elif x > carget.number|add:-3 and x < carget.number|add:3 %} <li class="page-item"><a
+                        class="page-link" href="?page={{ x }}&count={{count}}{{query}}">{{ x }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    <li class="page-item {% if not next %} disabled {% endif %}">
+                        <a class="page-link" href="{{ next }}&count={{count}}{{query}}">&#187;</a>
+                    </li>
+            </ul>
+        </nav>
+    </section>
+</section>
+{%endblock%}

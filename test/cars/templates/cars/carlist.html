@@ -1,0 +1,262 @@
+{% extends 'main/pattern.html' %}
+{% load static %}
+{%block title%}
+Category {{cat.NameCat}} - list of cars
+{%endblock%}
+{% block description %}
+<meta name="description" content="Rent {{cat.NameCat|lower}}">
+{% endblock %}
+{% block openg %}
+        <meta property="og:title" content="List of cars from categories {{cat.NameCat|lower }}" />
+        <meta property="og:description" content="Rent cars from categories {{cat.NameCat|lower }}"/>
+        <meta property="og:site_name" content="Test car rental Moscow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://maksmez.beget.tech/catalog/category_{{cat.id}}/" />
+        <meta property="og:image" content="http://maksmez.beget.tech/static/main/img/slider/autorent.jpg" />
+{% endblock %}
+{% block jsonld %}
+<script type='application/ld+json'>
+{
+  "@context": "http://www.schema.org",
+  "@type": "WebSite",
+  "name": "List of cars from categories {{cat.NameCat|lower }}",
+  "alternateName": "Test car rental Moscow",
+  "url": "http://maksmez.beget.tech/catalog/category_{{cat.id}}/"
+}
+ </script>
+{% endblock %}
+{% block content %}
+<div id="main-container">
+   <div class="bread2">
+      <ul class="breadcrumbs">
+         <li class="breadcrumbs-item">
+            <a class="breadcrumbs-link" href="{% url 'index' %}">Home</a>
+         </li>
+         <li class="breadcrumbs-item">
+            <a class="breadcrumbs-link" href="{% url 'catalog' %}">Catalog</a>
+         </li>
+         <li class="breadcrumbs-item">
+            <span class="breadcrumbs-link  current">{{cat.NameCat}}</span>
+         </li>
+      </ul>
+   </div>
+   <h1>{{cat.NameCat}}</h1>
+   <div class="boxcarfilter">
+      <div class="filtercar">
+         <form>
+            <div>
+               <h2 class="MainHeader">Filters</h2>
+               <label>Transmission</label>
+               <p>
+                  <select>
+                     <option>Auto</option>
+                     <option>Manual</option>
+                  </select>
+               </p>
+               <label>Engine</label>
+               <p>
+                  <select>
+                     <option>Petrol</option>
+                     <option>Diesel</option>
+                     <option>Electric(In progress)</option>
+                  </select>
+               </p>
+               <label>Body type</label>
+               <p>
+                  <select>
+                     <option>Sedan</option>
+                     <option>Crossover</option>
+                     <option>Universal</option>
+                     <option>Hatchback</option>
+                     <option>Coupe</option>
+                     <option>Micro</option>
+                  </select>
+               </p>
+               <label>Drive</label>
+               <p>
+                  <select>
+                     <option>Front</option>
+                     <option>Back</option>
+                     <option>Full</option>
+                  </select>
+               </p>
+
+            </div>
+            <div class="buttonfilter">
+               <a href="" class="selectcar">Select</a>
+               <a href="" class="selectcar">Reset</a>
+            </div>
+         </form>
+      </div>
+      <div class="mobile_filter">
+         <form class="filter_param">
+            <p class="sort_card">Sort
+               <select class="select_sort">
+                  <option>&#8593; cost</option>
+                  <option>&#8595; cost</option>
+                  <option>popularity</option>
+                  <option>name</option>
+               </select>
+            </p>
+
+            <a href="" class="filter_button" id="button_hide1"
+            onclick="diplay_hide('#block_id');return false;">Filter</a>
+            <a href="" class="fas fa-filter" id="button_hide2"
+            onclick="diplay_hide('#block_id');return false;"></a>
+            <p class="numer_card"><span>Pagination</span>
+               <select>
+                  <option>20</option>
+                  <option>30</option>
+                  <option>50</option>
+               </select>
+            </p>
+         </form>
+      </div>
+      <div class="mobile_filter_input" id="block_id" style="display: none;">
+         <form>
+            <div class="inputs_mobile">
+               <h2 class="MainHeader">Filter</h2>
+               <p>
+                  <label>Transmission</label>
+                  <select>
+                    <option>Auto</option>
+                    <option>Manual</option>
+                  </select>
+               </p>
+               <p>
+                  <label>Engine</label>
+                        <select>
+                          <option>Petrol</option>
+                          <option>Diesel</option>
+                          <option>Electric(In progress)</option>
+                        </select>
+                     </p>
+                     <p>
+                        <label>Body type</label>
+                        <select>
+                          <option>Sedan</option>
+                          <option>Crossover</option>
+                          <option>Universal</option>
+                          <option>Hatchback</option>
+                          <option>Coupe</option>
+                          <option>Micro</option>
+                        </select>
+                     </p>
+                     <p>
+                        <label>Drive</label>
+                        <select>
+                          <option>Front</option>
+                          <option>Back</option>
+                          <option>Full</option>
+                        </select>
+                     </p>
+                     <p>
+                        <label>Power</label>
+                        <input type="text" class="input_half">
+                        <input type="text" class="input_half">
+                     </p>
+                     <p>
+                        <label>Power</label>
+                        <input type="text">
+                     </p>
+                     <p>
+                        <label>Power</label>
+                        <input type="text">
+                     </p>
+                  </div>
+                  <div class=mobile_filter_button>
+                     <a href="" class="selectcar">Select</a>
+                     <a href="" class="selectcar">Reset</a>
+                  </div>
+               </form>
+            </div>
+            <div class="big-box">
+               <form class="sort_and_num" method="get" action="{% url 'carlist' cat.id %}">
+                  <div class="sort_param">
+                     <p class="sort_card" >Sort
+                        <select name="sort"  class="select_sort"  onchange="this.form.submit()">
+                           <option value="Brand_and_name" {% if sort == 'Brand_and_name' %} selected {% endif %}>name </option>
+                           <option value="Price" {% if sort == 'Price' %} selected {% endif %}>&#8593; cost </option>
+                           <option value="-Price" {% if sort == '-Price' %} selected {% endif %}>&#8595; cost</option>
+                        </select></p>
+                        <p class="numer_card"><span>Pagination</span>
+                           <select name="count" onchange="this.form.submit()">
+                              <option value="5" {% if count == 5 %} selected {% endif %}>5</option>
+                              <option value="10" {% if count == 10 %} selected {% endif %}>10</option>
+                              <option value="20" {% if count == 20 %} selected {% endif %}>20</option>
+                           </select>
+                        </p>
+                     </div>
+                  </form>
+                  <div itemscope itemtype="http://schema.org/ItemList" style="display: contents;">
+                  {% for x in carget %}
+                  {{x.CategoryID_id.NameCat}}
+                  {% for key, value in js.items %}
+                  {% if key == x.id and x.Status == 0 %}
+                  <div class="Cardcar">
+                     <div class="boxcar" itemscope itemprop="itemListElement" itemtype="http://schema.org/Product">
+                        <div class="content_card_car">
+                           <div class="name">
+                           <p itemprop="name">{{x.Brand_and_name}}</p>
+                           <meta itemprop="description" content="{{x.Brand_and_name}}">
+                        </div>
+                        <div class="description">
+                           <div>
+                              <p>{{x.get_Transmission_display}}</p>
+                              <p>{{x.get_Engine_display}}</p>
+                           </div>
+                           <div>
+                              <p>{{x.get_Car_type_display}}</p>
+                              <p>{{x.get_Drive_display}}</p>
+                           </div>
+                        </div>
+                        <div itemscope itemprop="offers" itemtype="http://schema.org/Offer" class="price">
+                           <p itemprop="price">{{x.Price}} ₽/Day</p>
+                            <meta itemprop="priceCurrency" content="RUB">
+                        </div>
+                        <a itemprop="url" href="{% url 'cars_detail' x.CategoryID_id x.id %}" class="selectcar">Select</a>
+                     </div>
+                     <div class="fotorama_carlist fr">
+                        <div class="fotorama" data-nav="false" data-width="100%">
+                           {% for z in value %}
+                              <a itemprop="image" href="{{z}}"></a>
+                           {% endfor %}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+                  {% endif %}
+                  {% endfor %}
+                  {% endfor %}
+              </div>
+               <nav class="nav_pag">
+                  <ul class="pagination">
+                      {% if is_paginated %}
+                      {% if carget.has_previous %}
+                      <li class="pagination-item ">
+                          <a href="?page={{ carget.previous_page_number }}&sort={{sort}}&count={{count}}">&#171;</a>
+                      </li>
+                      {% endif %}
+                      {% for num in carget.paginator.page_range %}
+                      {% if num == carget.number %}
+                      <li class="pagination-item pg-active">
+                          <a href="#">{{ num }}</a>
+                      </li>
+                      {% elif num > carget.number|add:'-3' and num < carget.number|add:'3' %}
+                          <li class="pagination-item ">
+                          <a href="?page={{ num }}&sort={{sort}}&count={{count}}">{{ num }}</a>
+                          </li>
+                          {% endif %}
+                          {% endfor %}
+                          {% if carget.has_next %}
+                          <li class="pagination-item">
+                              <a href="?page={{ carget.next_page_number }}&sort={{sort}}&count={{count}}">&#187;</a>
+                          </li>
+                          {% endif %}
+                      {% endif %}
+                  </ul>
+              </nav>
+            </div>
+         </div>
+      </div>
+   {% endblock %}
