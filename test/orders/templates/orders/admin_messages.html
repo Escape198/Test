@@ -1,0 +1,129 @@
+{% extends 'my_admin/pattern.html' %}
+{% load static %}
+{%block title%}Messages{%endblock%}
+{% block content %}
+        <section class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'start_admin' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Messages</li>
+                </ol>
+            </nav>
+            <h1>Messages</h1>
+            <form class="card border-dark col-12 ">
+                <div class="card-body row justify-content-around align-items-start">
+                    <div class="col-lg-3 col-12 justify-content-between d-md-flex d-lg-block p-0">
+                        <div class="justify-content-between d-flex align-items-center col-lg-12 col-md-6 col-12 p-0">
+                            <label class="col-3 p-0">From</label>
+                            <input type="date" class="form-control col-9 p-1 my-1">
+                        </div>
+                        <div class="justify-content-between d-flex align-items-center col-lg-12 col-md-6 col-12 p-0">
+                            <label class="col-2 p-0 ml-md-4 ml-lg-0">To</label>
+                            <input type="date" class="form-control  col-9 p-1 my-1">
+                        </div>
+                    </div>
+                    <nav class="navbar  row col-lg-9 col-md-12 col-sm-12 pt-0 px-0 px-lg-3 mt-1 ">
+                        <div class="form-inline col-12 align-items-start p-0">
+                            <div class="form-inline col-lg-9 p-0 my-4 my-lg-0">
+                                <input class="form-control col-lg-11 col-12 mb-lg-0 mb-2 mr-2 " type="search"
+                                    placeholder="Search" aria-label="Поиск">
+                                <div class="row col-12 justify-content-md-center justify-content-start">
+                                    <div class=" form-check-inline col-md-3 col-12 p-0">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio1" value="option1">
+                                    <label class="form-check-label" for="inlineRadio1">by name</label>
+                                </div>
+                                <div class=" form-check-inline col-md-3 col-12 p-0">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio1" value="option1">
+                                    <label class="form-check-label" for="inlineRadio1">by email</label>
+                                </div>
+                                <div class=" form-check-inline col-md-4 col-12 p-0">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio1" value="option1">
+                                    <label class="form-check-label" for="inlineRadio1">by phone</label>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="form-inline col-lg-3 p-0">
+                                <button class="btn btn-outline-primary col-lg-12 col-12 mb-sm"
+                                    type="submit">Search</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </form>
+            <div class="mt-5">
+            {% for x in orderget %}
+                {% for y in x.message_set.all %}
+                {%if y.From.Position == 2 and forloop.last %}
+                <div class="card mb-5">
+                    <div class="card-header col-12">
+                        <div class="row justify-content-between align-items-center  ">
+                            <div class=" col-12 text-center col-sm-12 justify-content-md-around d-md-flex">
+                                <h4>Order&nbsp;№{{x.id}}</h4>
+                                <h5>Date:&nbsp;{{y.Date|date:'d.m H:i'}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body col-12">
+                        <div class="row">
+                            <div class="col-md-5 m-0 row d-flex justify-content-center ">
+                                <div class="row col-12 justify-content-lg-between pl-0  ">
+                                    <h5 class="d-none d-lg-block">Name</h5>
+                                    <h5>{{x.Client.Name}}</h5>
+                                </div>
+                                <div class="row col-12 justify-content-lg-between pl-0 ">
+                                    <h5 class="d-none d-lg-block">Phone</h5>
+                                    <h5>{{x.Client.Phone}}</h5>
+                                </div>
+                                <div class="row col-12 justify-content-lg-between text-center pl-0 mb-3 ">
+                                    <h5 class="d-none d-lg-block">Status</h5>
+                                    {% if x.Status == 0 %}
+                                        <h5 class="text-success">Active</h5>
+                                    {% elif x.Status == 1  %}
+                                        <h5 class="text-warning">Cancelled</h5>
+                                    {% else %}
+                                        <h5 class="text-danger">Completed</h5>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-7 text-md-left">
+                                <h5>Last post:</h5>
+                                <textarea class="form-control col-12 mb-2" readonly>{{y.Message}}</textarea>
+                                <a href="{% url 'admin_order' x.id %}" class="btn btn-primary col-12 col-md-5 col-lg-3 p-2">Open chat</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </div>
+            <div>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        {% if is_paginated %}
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">&#171;</a>
+                        </li>
+                        {% endif %}
+                        {% for num in page_obj.paginator.page_range %}
+                        {% if num == page_obj.number %}
+                        <li class="page-item  active"><a class="page-link " href="#">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&#187;</a>
+                        </li>
+                        {% endif %}
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </section>
+{% endblock %}

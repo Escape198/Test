@@ -1,0 +1,113 @@
+{% extends 'my_admin/pattern.html' %}
+{% load static %}
+{%block title%}Company №{{company.id}}{%endblock%}
+{% block content %}
+<section class="col-12">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'start_admin' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_companies' %}">All companies</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_company' company.id %}">{{company.Name}}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Transport</li>
+        </ol>
+    </nav>
+    <h1>{{company.Name}}</h1>
+    <div class=" my-3">
+        <ul class="nav nav-pills col-12 text-center p-0">
+            <li class="nav-item col-md-auto col-sm-6 col-12">
+                <a class="nav-link" href="{% url 'admin_company' company.id %}">Data</a>
+            </li>
+            <li class="nav-item col-md-auto col-sm-6 col-12">
+                <a class="nav-link active" href="">Transport</a>
+            </li>
+            <li class="nav-item col-md-auto col-sm-6 col-12">
+                <a class="nav-link" href="{% url 'admin_company_orders' company.id %}">Orders</a>
+            </li>
+            <li class="nav-item col-md-auto col-sm-6 col-12">
+                <a class="nav-link" href="{% url 'admin_employees' company.id %}">Employees</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mt-5">
+        {%for x in carget %}
+        {% for key, value in js.items %}
+        {% if key == x.id %}
+        <div class="card mb-5">
+            <div class="card-header col-12">
+                <div class="row justify-content-between align-items-center  ">
+                    <div class=" col-12 text-center col-sm-6 justify-content-md-around d-md-flex">
+                        <h4>{{x.Brand_and_name}}</h4>
+                    </div>
+                    <div class="col-12 text-center col-sm-6 text-md-right">
+                        <a href="{% url 'admin_info_car' x.id %}" class="btn btn-primary col-7 p-2">Go to</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body col-12">
+                <div class="row p-2 justify-content-between">
+                    <div class=" row col-lg-6  text-left m-0  justify-content-center   ">
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Company</h5>
+                            <h5>{{x.CompanyID.Name}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Categories</h5>
+                            <h5>{{x.CategoryID}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Transmission</h5>
+                            <h5>{{x.get_Transmission_display}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Engine</h5>
+                            <h5>{{x.get_Engine_display}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Body type</h5>
+                            <h5 class="">{{x.get_Car_type_display}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Wheel drive</h5>
+                            <h5 class="">{{x.get_Drive_display}}</h5>
+                        </div>
+                        <div class="row col-md-10 justify-content-sm-between justify-content-center">
+                            <h5 class="d-none d-sm-block">Cost</h5>
+                            <h5>{{x.Price}}</h5>
+                        </div>
+                    </div>
+                    <div class="row col-lg-6  m-0 justify-content-center p-0 mt-2">
+                        <div class="fotorama col-lg-10 col-md-9 col-12 p-0 " data-nav="false" data-maxwidth="500" data-maxheight="300">
+                            {% for z in value %}
+                            <a src="{{z}}"></a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </div>
+    <section class="col-12 mt-2">
+        <nav aria-label="Example of page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if not prev %} disabled {% endif %}">
+                    <a class="page-link" href="{{ prev }}" tabindex="-1" aria-disabled="true">&#171;</a>
+                </li>
+                {% for x in carget.paginator.page_range %}
+                {% if x == carget.number %}
+                <li class="page-item active"><a class="page-link" href="?page={{ x }}">{{ x }}</a></li>
+                {% elif x > carget.number|add:-3 and x < carget.number|add:3 %} <li class="page-item"><a
+                        class="page-link" href="?page={{ x }}">{{ x }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    <li class="page-item {% if not next %} disabled {% endif %}">
+                        <a class="page-link" href="{{ next }}">&#187;</a>
+                    </li>
+            </ul>
+        </nav>
+    </section>
+</section>
+<wbr>
+{%endblock%}
